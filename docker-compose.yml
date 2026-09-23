@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  cyber_zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: cyber_zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2183:2181"
+    networks:
+      - cyber-net
+
+  cyber_kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: cyber_kafka
+    depends_on:
+      - cyber_zookeeper
+    ports:
+      - "9095:9095"
+      - "29095:29095"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: cyber_zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://cyber_kafka:29095,PLAINTEXT_HOST://localhost:9095
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    networks:
+      - cyber-net
+
+  cyber_redis:
+    image: redis:7-alpine
+    container_name: cyber_redis
+    ports:
+      - "6380:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - cyber_redis_data:/data
+    networks:
+      - cyber-net
+
+  cyber_postgres:
+    image: postgres:14-alpine
+    container_name: cyber_postgres
+    environment:
+      POSTGRES_USER: cyber_admin
+      POSTGRES_PASSWORD: cyber_secret
+      POSTGRES_DB: cyber_threat_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - cyber_pg_data:/var/lib/postgresql/data
+      - ./configs/postgres_init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cyber-net
+
+networks:
+  cyber-net:
+    driver: bridge
+
+volumes:
+  cyber_redis_data:
+  cyber_pg_data:
