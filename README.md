@@ -1,6 +1,6 @@
 # 🌐 Zero-Hour Cyber Threat & Phishing Sentinel (Live Global CT SOC)
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![Kafka: 7.4](https://img.shields.io/badge/Apache%20Kafka-7.4.0-black.svg?logo=apachekafka)](https://kafka.apache.org/)
 [![Redis: 7-alpine](https://img.shields.io/badge/Redis-7.0-red.svg?logo=redis)](https://redis.io/)\
@@ -197,4 +197,4 @@ cyber_threat_sentinel/
 ---
 
 ## 📄 Lisensi
-Didistribusikan di bawah lisensi Apache License 2.0. Bebas digunakan untuk riset akademik dan implementasi industri.
+Didistribusikan di bawah lisensi MIT License. Bebas digunakan untuk riset akademik dan implementasi industri.
